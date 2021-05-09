@@ -1,4 +1,5 @@
 import random
+from colorama import Fore
 #'J♠', 'A♥', '4♣', '7♦'
 
 
@@ -8,10 +9,12 @@ def cria_baralho():
     random.shuffle(cards)
     return cards
 def display_baralho(deck): 
-    #Essa função 
+    #Essa função dispõe o baralho, com uma carta por linha do terminal
     card_num = 1
     for i in deck:
-        print(f"{card_num:2}. {i:3}")
+        naipe = extrai_naipe(i)
+        cor = cor_naipe(i)
+        print(f"{card_num:2}. {cor}{i:3}\033[00m")
         card_num += 1
 def extrai_naipe(carta):
     naipe = carta[-1]
@@ -45,21 +48,49 @@ def empilha(baralho,origem,destino):
     baralho.remove(baralho[origem])   
     baralho[destino] = carta
     return baralho
+def possui_movimentos_possiveis(baralho):
+    for i in baralho:
+        movimentos = lista_movimentos_possiveis(baralho,baralho.index(i))
+        if movimentos == []:
+            None
+        else:
+            return True
+    return False
+def cor_naipe(carta):
+    naipe = carta[-1]
+    cores = {'♠':"\033[96m",'♥':"\033[91m",'♣':"\033[92m",'♦':"\033[93m"}
+    return cores[naipe]
 
-baralho = cria_baralho()
-while len(baralho) > 0:
-    display_baralho(baralho)
-    entrada = input(f"Entre um valor entre 1 e {len(baralho)}: ")
-    carta = int(entrada) - 1
-    movimentos = lista_movimentos_possiveis(baralho, carta)
-    if len(movimentos) == 0:
-        print("Não há movimentos possíveis para essa carta, por favor escolha outra")
-    elif len(movimentos) == 2:
-        print(f"1. {baralho[carta-1]}")
-        print(f"3. {baralho[carta-3]}")
-        escolha = int(input("Por favor escolha a carta em que quer empilhar(1 ou 3): "))
-        destino = carta - escolha
-        baralho = empilha(baralho, carta, destino)
-    else:
-        destino = carta - movimentos[0]
-        baralho = empilha(baralho, carta, destino)
+#print(f"{cor}{texto}\033[00m") Template de cores
+while True:
+    input("Aperte Enter para começar")
+    continua = True
+    while continua == True:
+        baralho = cria_baralho()
+        valido = possui_movimentos_possiveis(baralho)
+        if valido == True:
+            mudou = True
+            while len(baralho) > 0:
+                if mudou == True:
+                    display_baralho(baralho)
+                entrada = input(f"Entre um valor entre 1 e {len(baralho)}: ")
+                carta = int(entrada) - 1
+                movimentos = lista_movimentos_possiveis(baralho, carta)
+                if len(movimentos) == 0:
+                    print(Fore.WHITE + "Não há movimentos possíveis para essa carta, por favor escolha outra")
+                    mudou = False
+                elif len(movimentos) == 2:
+                    cor1 = cor_naipe(baralho[carta-1])
+                    cor2 = cor_naipe(baralho[carta-3])
+                    print(f"1. {cor1}{baralho[carta-1]}\033[00m")
+                    print(f"3. {cor2}{baralho[carta-3]}\033[00m")
+                    escolha = int(input("Por favor escolha a carta em que quer empilhar(1 ou 3): "))
+                    destino = carta - escolha
+                    baralho = empilha(baralho, carta, destino)
+                    mudou = True
+                else:
+                    destino = carta - movimentos[0]
+                    baralho = empilha(baralho, carta, destino)
+                    mudou = True
+                continua = possui_movimentos_possiveis(baralho)
+        
