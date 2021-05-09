@@ -1,5 +1,4 @@
 import random
-from colorama import Fore
 #'J♠', 'A♥', '4♣', '7♦'
 
 
@@ -80,10 +79,10 @@ while True:
                     print(Fore.WHITE + "Não há movimentos possíveis para essa carta, por favor escolha outra")
                     mudou = False
                 elif len(movimentos) == 2:
-                    cor1 = cor_naipe(baralho[carta-1])
-                    cor2 = cor_naipe(baralho[carta-3])
-                    print(f"1. {cor1}{baralho[carta-1]}\033[00m")
-                    print(f"3. {cor2}{baralho[carta-3]}\033[00m")
+                    cor = cor_naipe(baralho[carta-1])
+                    print(f"1. {cor}{baralho[carta-1]}\033[00m")
+                    cor = cor_naipe(baralho[carta-3])
+                    print(f"3. {cor}{baralho[carta-3]}\033[00m")
                     escolha = int(input("Por favor escolha a carta em que quer empilhar(1 ou 3): "))
                     destino = carta - escolha
                     baralho = empilha(baralho, carta, destino)
@@ -93,4 +92,15 @@ while True:
                     baralho = empilha(baralho, carta, destino)
                     mudou = True
                 continua = possui_movimentos_possiveis(baralho)
+                if continua == False:
+                    ganha = False
+                    break
+            if ganha == False:
+                print("Não há mais movimentos possíveis. Tente novamente")
+                print("")
+                print("")
+            else:
+                print("Parabéns! Você ganhou!")
+                print("")
+                print("")
         
