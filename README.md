@@ -4,6 +4,8 @@ Esse programa é o jogo Paciência Acordeão(Solitaire Accordion), feito para o 
 
 Changelog:
 
+1.0.0 - Versão release 1. Adicionados comentários de código. Problemas conhecidos: certos terminais não reconhecem corretamente os caracteres ASCII dos naipes, ou as cores do texto
+
 0.3.1 - Consertados bugs no loop. Mensagens de vitória e derrota adicionadas
 
 0.3.0 - Sistema de cores implementado. Consertado bug que reiniciava o jogo prematuramente
