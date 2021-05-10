@@ -1,6 +1,6 @@
 import random
-#'J♠', 'A♥', '4♣', '7♦'
-
+#'♠', '♥', '♣', '♦' Template de naipes
+#print(f"{cor}{texto}\033[00m") Template de cores
 
 def cria_baralho(): 
     #Cria um baralho aleatório sem repetições
@@ -60,7 +60,6 @@ def cor_naipe(carta):
     cores = {'♠':"\033[96m",'♥':"\033[91m",'♣':"\033[92m",'♦':"\033[93m"}
     return cores[naipe]
 
-#print(f"{cor}{texto}\033[00m") Template de cores
 while True:
     input("Aperte Enter para começar")
     continua = True
@@ -72,18 +71,28 @@ while True:
             while len(baralho) > 0:
                 if mudou == True:
                     display_baralho(baralho)
-                entrada = input(f"Entre um valor entre 1 e {len(baralho)}: ")
-                carta = int(entrada) - 1
+                    tamanho = len(baralho)
+                while True:
+                    entrada = int(input(f"Entre um valor entre 1 e {tamanho}: "))
+                    if entrada in range(1,tamanho+1):
+                        break
+                    else:
+                        print("Por favor entre um número válido")
+                carta = entrada - 1
                 movimentos = lista_movimentos_possiveis(baralho, carta)
                 if len(movimentos) == 0:
-                    print(Fore.WHITE + "Não há movimentos possíveis para essa carta, por favor escolha outra")
+                    print("Não há movimentos possíveis para essa carta, por favor escolha outra")
                     mudou = False
                 elif len(movimentos) == 2:
                     cor = cor_naipe(baralho[carta-1])
                     print(f"1. {cor}{baralho[carta-1]}\033[00m")
                     cor = cor_naipe(baralho[carta-3])
                     print(f"3. {cor}{baralho[carta-3]}\033[00m")
-                    escolha = int(input("Por favor escolha a carta em que quer empilhar(1 ou 3): "))
+                    while True:
+                        escolha = int(input("Por favor escolha a carta em que quer empilhar(1 ou 3): "))
+                        if escolha in [1,3]:
+                            break
+                        print("Por favor entre uma alternativa válida")
                     destino = carta - escolha
                     baralho = empilha(baralho, carta, destino)
                     mudou = True
@@ -94,7 +103,8 @@ while True:
                 continua = possui_movimentos_possiveis(baralho)
                 if continua == False:
                     ganha = False
-                    break
+                    break 
+                
             if ganha == False:
                 print("Não há mais movimentos possíveis. Tente novamente")
                 print("")
